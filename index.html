@@ -1,1 +1,758 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İklimPAB Ders Planı Dönüt (Demo 2.1)</title>
+<style>
+:root{--zemin:#f4f6f1;--kart:#fff;--yazi:#1d2a24;--soluk:#62706a;--cizgi:#dde3da;--ana:#1f6f54;--ana-koyu:#17543f;--hata:#b3261e;--uyari:#8a5a00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--zemin);color:var(--yazi);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--ana);cursor:pointer;text-decoration:underline}
+.demo-serit{background:#fff1d1;color:var(--uyari);text-align:center;padding:.45rem 1rem;font-size:.9rem}
+.ust{background:var(--kart);border-bottom:1px solid var(--cizgi);padding:.8rem 1.5rem;display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;align-items:center;justify-content:space-between}
+.marka{font-weight:700;font-size:1.1rem;display:flex;align-items:center;gap:.5rem}
+.marka em{font-style:normal;font-weight:400;color:var(--soluk)}
+.yaprak{width:16px;height:16px;background:var(--ana);border-radius:0 70% 0 70%;display:inline-block}
+nav{display:flex;flex-wrap:wrap;gap:1.1rem;align-items:center}
+nav a{text-decoration:none;color:var(--yazi)}
+nav a:hover,nav a.etkin{color:var(--ana)}
+nav a.etkin{font-weight:600}
+nav a.cikis{color:var(--soluk)}
+main{max-width:1000px;margin:0 auto;padding:1.5rem}
+h1{font-size:1.6rem;margin:.4rem 0 1rem}
+h2{font-size:1.1rem;margin:0 0 .7rem}
+.kart{background:var(--kart);border:1px solid var(--cizgi);border-radius:10px;padding:1.2rem 1.4rem;margin:0 0 1.2rem}
+.dar{max-width:460px;margin:2.5rem auto}
+.soluk{color:var(--soluk)} .kucuk{font-size:.87rem}
+label{display:block;margin:0 0 .9rem;font-weight:600;font-size:.92rem}
+label span{display:block;font-weight:400}
+input,textarea{font:inherit;width:100%;padding:.5rem .65rem;border:1px solid #bcc7bf;border-radius:7px;background:#fff;margin-top:.25rem;font-weight:400}
+input[type=checkbox]{width:auto;margin:0 .35rem 0 0}
+input[type=file]{padding:.35rem;border-style:dashed}
+input[type=range]{padding:0;border:0;accent-color:var(--ana)}
+textarea{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;line-height:1.5;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--ana);outline-offset:1px}
+.dugme{display:inline-block;background:var(--ana);color:#fff;border:0;border-radius:7px;padding:.55rem 1rem;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.dugme:hover{background:var(--ana-koyu)}
+.dugme.ikincil{background:#fff;color:var(--ana);border:1px solid var(--ana);padding:.35rem .7rem;font-size:.9rem}
+.dugme.tehlike{background:#fff;color:var(--hata);border:1px solid var(--hata);padding:.35rem .7rem;font-size:.9rem}
+.satirici{display:inline-flex;gap:.4rem;align-items:center;margin:0}
+.satirici input{width:auto;margin:0;padding:.35rem .5rem}
+.yatay{display:flex;flex-wrap:wrap;gap:.9rem;align-items:flex-end}
+.yatay label{margin:0;flex:1 1 180px}
+.yatay .genis{flex:2 1 280px}
+.yatay .onay{flex:0 0 auto;padding-bottom:.55rem}
+.kisa{max-width:240px}
+.baslik-satiri{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem;margin-bottom:.6rem}
+table{width:100%;border-collapse:collapse;background:var(--kart);border:1px solid var(--cizgi);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:.65rem .9rem;border-bottom:1px solid var(--cizgi);vertical-align:middle}
+th{font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:var(--soluk);background:#fafbf8}
+tr:last-child td{border-bottom:0}
+.rozet{display:inline-block;font-size:.8rem;font-weight:600;padding:.15rem .6rem;border-radius:99px;background:#e8ece6;color:var(--soluk);white-space:nowrap}
+.rozet.tamam{background:#dcefe6;color:var(--ana-koyu)} .rozet.bekle{background:#fff1d1;color:var(--uyari)} .rozet.hata{background:#fbe3e1;color:var(--hata)} .rozet.bilgi{background:#e3edf7;color:#24527a}
+.bildirim{padding:.7rem 1rem;border-radius:8px;margin:0 0 1rem;background:#e8ece6;overflow-wrap:anywhere}
+.bildirim.tamam{background:#dcefe6;color:var(--ana-koyu)} .bildirim.hata{background:#fbe3e1;color:var(--hata)} .bildirim.uyari{background:#fff1d1;color:var(--uyari)}
+.ozet{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin:0 0 1.2rem}
+.ozet div{background:var(--kart);border:1px solid var(--cizgi);border-radius:10px;padding:.8rem 1rem;color:var(--soluk)}
+.ozet b{display:block;font-size:1.6rem;color:var(--yazi)}
+.surum-ust{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;margin-bottom:.8rem}
+.surum-ust h2{margin:0}
+.donut{border-left:3px solid var(--ana);padding:.2rem 0 .2rem 1.1rem;margin:.5rem 0 1rem;overflow-wrap:anywhere}
+.donut h3{font-size:1.05rem;margin:1.1rem 0 .4rem}
+.donut ul{margin:.3rem 0;padding-left:1.2rem}
+.bekleme{display:flex;align-items:center;gap:.7rem;color:var(--uyari)}
+.donen{width:18px;height:18px;border:3px solid #f0d9a0;border-top-color:var(--uyari);border-radius:50%;animation:don 1s linear infinite;flex:none}
+@keyframes don{to{transform:rotate(360deg)}}
+code{background:#eef1ec;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+.hesaplar td{padding:.35rem .6rem}
+.nokta{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--hata);vertical-align:middle}
+.ust-bosluk{margin-top:1.2rem}
+progress.cubuk{appearance:none;-webkit-appearance:none;width:100%;height:14px;border:0;border-radius:99px;overflow:hidden;background:#e8ece6;margin:.2rem 0 .8rem;display:block}
+progress.cubuk::-webkit-progress-bar{background:#e8ece6}
+progress.cubuk::-webkit-progress-value{background:var(--ana)} progress.cubuk::-moz-progress-bar{background:var(--ana)}
+progress.cubuk.uyari::-webkit-progress-value{background:#c98a00} progress.cubuk.uyari::-moz-progress-bar{background:#c98a00}
+progress.cubuk.kritik::-webkit-progress-value{background:var(--hata)} progress.cubuk.kritik::-moz-progress-bar{background:var(--hata)}
+.satir-uyari td{background:#fff8e6}
+.demo-kutu{border:2px dashed #e2c37a;background:#fffbf0}
+.demo-kutu h2{color:var(--uyari)}
+@media(max-width:700px){table{display:block;overflow-x:auto}}
+</style>
+</head>
+<body>
+<div class="demo-serit">Demo sürüm 2.1: yapay zekâ bağlı değil, dönütler örnektir. Veriler yalnızca bu tarayıcıda saklanır. Gerçek ders planı ve gerçek şifre girmeyin.</div>
+<div id="uygulama"></div>
 
+<script>
+"use strict";
+/* İklimPAB dönüt sitesi 2.1, tarayıcıda çalışan demo.
+   Sunucu ve API anahtarı yoktur. Tüm veri localStorage içinde durur.
+   Gerçek sitedeki ekranların ve kuralların aynısını gösterir. */
+
+const ANAHTAR = "iklimpab_demo_v21";
+const AZAMI_DOSYA = 600 * 1024;     // tarayıcı deposu küçük olduğu için dosya içeriği bu boyuta kadar saklanır
+const DISK_TOPLAM_GB = 40;          // demo sunucunun disk boyutu
+const DISK_UYARI = 80, DISK_KRITIK = 90, DISK_DUR = 99;
+const SINIR_UYE = 30, SINIR_TOPLAM = 600;
+const YEDEK_SAKLA = 14;
+
+const VARSAYILAN_YONERGE = `Sen iklim eğitimi alanında deneyimli bir öğretmen eğitimcisisin. Öğretmenlerin hazırladığı ders planlarına yapıcı, somut ve uygulanabilir dönüt veriyorsun.
+
+Sana verilen ders planını şu başlıklar altında değerlendir:
+
+1. Kazanımlar ve hedefler: Açık, ölçülebilir ve iklim konusuyla uyumlu mu?
+2. İçeriğin bilimsel doğruluğu: İklimle ilgili kavramlar doğru ve güncel mi? Olası kavram yanılgıları ele alınmış mı?
+3. Öğretim süreci ve etkinlikler: Etkinlikler kazanımlara hizmet ediyor mu? Öğrenci etkin mi? Süre gerçekçi mi?
+4. Ölçme ve değerlendirme: Kazanımlara ulaşıldığı nasıl anlaşılacak?
+5. Genel değerlendirme: Planın en güçlü iki yönü ve öncelikli üç geliştirme önerisi.
+
+Kurallar:
+- Türkçe yaz, öğretmene saygılı ve cesaretlendirici bir dille doğrudan hitap et.
+- Her eleştiriyi plandaki somut bir bölüme dayandır ve nasıl düzeltileceğini örnekle.
+- Planda olmayan bilgiyi varsayma; eksikse eksik olduğunu belirt.
+- Planı baştan yazma, öğretmenin kendi planını geliştirmesine yardım et.`;
+
+const iki = n => String(n).padStart(2, "0");
+function zamanMetni(d) { return `${d.getFullYear()}-${iki(d.getMonth() + 1)}-${iki(d.getDate())} ${iki(d.getHours())}:${iki(d.getMinutes())}`; }
+function simdi() { return zamanMetni(new Date()); }
+function bugun() { return simdi().slice(0, 10); }
+function boyut(b) {
+  const birimler = ["B", "KB", "MB", "GB", "TB"]; let i = 0;
+  while (b >= 1024 && i < birimler.length - 1) { b /= 1024; i++; }
+  return (i < 2 ? b.toFixed(0) : b.toFixed(1)) + " " + birimler[i];
+}
+
+function ornekDonut(baslik, dosyaAdi, kelime) {
+  const okunan = kelime ? `Yüklenen dosyadan ${kelime} kelime okundu.` : `Yüklenen dosya: ${dosyaAdi}.`;
+  return `## Örnek dönüt (demo)
+
+Bu metin gerçek bir yapay zekâ dönütü **değildir**. Sitenin nasıl çalışacağını göstermek için hazırlanmış sabit bir örnektir. ${okunan}
+
+## 1. Kazanımlar ve hedefler
+"${baslik}" planındaki kazanımların bir kısmı gözlenebilir fiillerle yazılmış. "Öğrenci iklim değişikliğini kavrar" gibi ifadeleri "açıklar", "karşılaştırır" ya da "veriden çıkarım yapar" biçiminde ölçülebilir hale getirebilirsiniz.
+
+## 2. İçeriğin bilimsel doğruluğu
+Hava durumu ile iklim arasındaki ayrımı dersin başında açıkça ele almanız, sık görülen bir kavram yanılgısını önler.
+
+## 3. Öğretim süreci ve etkinlikler
+- Giriş etkinliği öğrencilerin ön bilgisini ortaya çıkarıyor, bu güçlü bir yön.
+- Ana etkinlik için ayrılan süre dar görünüyor; grup çalışmasına en az on dakika ekleyin.
+
+## 4. Ölçme ve değerlendirme
+Ders sonunda kısa bir çıkış kartı kullanırsanız her kazanıma ulaşılıp ulaşılmadığını görebilirsiniz.
+
+## 5. Genel değerlendirme
+**Güçlü yönler:** günlük yaşamla kurulan bağ ve öğrenciyi etkin kılan giriş.
+**Öncelikli öneriler:** kazanımları ölçülebilir yazmak, süreyi yeniden planlamak, değerlendirme aracını eklemek.`;
+}
+
+function baslangic() {
+  const dun = new Date(); dun.setDate(dun.getDate() - 1); dun.setHours(3, 30, 0, 0); // dün gece otomatik yedek
+  const dunAd = `yedek_${dun.getFullYear()}${iki(dun.getMonth() + 1)}${iki(dun.getDate())}_033000.zip`;
+  return {
+    uyeler: [
+      { id: 1, kullanici: "admin", ad: "Proje Yöneticisi", sifre: "admin1234", admin: true, aktif: true, degismeli: false, sonGiris: "" },
+      { id: 2, kullanici: "ogretmen", ad: "Ayşe Yılmaz (örnek öğretmen)", sifre: "ogretmen1234", admin: false, aktif: true, degismeli: false, sonGiris: "2026-11-10 14:18" }
+    ],
+    planlar: [
+      { id: 1, uye: 2, baslik: "7. sınıf: Sera etkisi ve küresel ısınma", gonderimler: [
+        { id: 1, surum: 1, dosya: "sera_etkisi_plani.docx", veri: null, zaman: "2026-11-10 14:20", durum: "hazir",
+          donut: ornekDonut("7. sınıf: Sera etkisi ve küresel ısınma", "sera_etkisi_plani.docx", 0), model: "demo" }
+      ] }
+    ],
+    ayar: { yonerge: VARSAYILAN_YONERGE, azami: 10 },
+    kayitlar: [
+      { zaman: zamanMetni(dun), kullanici: "sistem", olay: "yedek_alindi", ayrinti: dunAd },
+      { zaman: "2026-11-10 14:20", kullanici: "ogretmen", olay: "yukleme", ayrinti: "plan=1 sürüm=1" },
+      { zaman: "2026-11-10 14:18", kullanici: "ogretmen", olay: "giris", ayrinti: "" },
+      { zaman: "2026-11-10 14:17", kullanici: "ogretmen", olay: "giris_hatali", ayrinti: "" }
+    ],
+    yedekler: [{ ad: dunAd, zaman: zamanMetni(dun), boyut: 184320 }],
+    cagrilar: {},
+    disk: 34,
+    sayac: 10
+  };
+}
+
+let D;
+try { D = JSON.parse(localStorage.getItem(ANAHTAR)) || baslangic(); } catch (e) { D = baslangic(); }
+let oturumId = null;
+try { oturumId = Number(sessionStorage.getItem(ANAHTAR + "_oturum")) || null; } catch (e) {}
+let sayfa = { ad: "giris" };
+let mesaj = null;
+const hataliGiris = {}; // kullanıcı adı -> [zamanlar]
+
+function kaydet() {
+  try { localStorage.setItem(ANAHTAR, JSON.stringify(D)); return true; }
+  catch (e) { return false; }
+}
+function yeniId() { D.sayac += 1; return D.sayac; }
+function ben() { return D.uyeler.find(u => u.id === oturumId && u.aktif) || null; }
+function uyeBul(id) { return D.uyeler.find(u => u.id === id); }
+function planBul(id) { return D.planlar.find(p => p.id === id); }
+function bildir(metin, tur) { mesaj = { metin, tur: tur || "tamam" }; }
+function git(ad, ek) { sayfa = Object.assign({ ad }, ek || {}); ciz(); window.scrollTo(0, 0); }
+function kayit(olay, ayrinti, kullanici) {
+  const u = ben();
+  D.kayitlar.unshift({ zaman: simdi(), kullanici: kullanici != null ? kullanici : (u ? u.kullanici : ""), olay, ayrinti: ayrinti || "" });
+  D.kayitlar = D.kayitlar.slice(0, 300);
+}
+
+function k(s) { // HTML kaçışı
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function donutHtml(metin) { // önce kaçış, sonra basit biçimlendirme
+  let html = "", liste = false;
+  for (const satir of k(metin).split("\n")) {
+    const s = satir.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+    if (/^- /.test(s)) { if (!liste) { html += "<ul>"; liste = true; } html += "<li>" + s.slice(2) + "</li>"; continue; }
+    if (liste) { html += "</ul>"; liste = false; }
+    if (/^#+ /.test(s)) html += "<h3>" + s.replace(/^#+ /, "") + "</h3>";
+    else if (s.trim()) html += "<p>" + s + "</p>";
+  }
+  return html + (liste ? "</ul>" : "");
+}
+function rozet(durum) {
+  if (durum === "hazir") return '<span class="rozet tamam">Dönüt hazır</span>';
+  if (durum === "bekliyor") return '<span class="rozet bekle">Hazırlanıyor</span>';
+  if (durum === "hata") return '<span class="rozet hata">Hata</span>';
+  return '<span class="rozet">Yükleme yok</span>';
+}
+function seviyeRozet(s) {
+  return { iyi: '<span class="rozet tamam">İyi</span>', uyari: '<span class="rozet bekle">Uyarı</span>',
+    kritik: '<span class="rozet hata">Kritik</span>', bilgi: '<span class="rozet bilgi">Bilgi</span>' }[s];
+}
+function sonGonderim(p) { return p.gonderimler[p.gonderimler.length - 1]; }
+
+/* ------------------------------------------------------------ kurallar */
+function sifreSorunu(sifre, kullanici) {
+  if (sifre.length < 8) return "Şifre en az 8 karakter olmalı.";
+  if (!/[A-Za-zÇĞİÖŞÜçğıöşü]/.test(sifre) || !/\d/.test(sifre)) return "Şifre en az bir harf ve bir rakam içermeli.";
+  if (kullanici && sifre.toLowerCase() === kullanici.toLowerCase()) return "Şifre kullanıcı adıyla aynı olamaz.";
+  return null;
+}
+function rastgeleSifre() {
+  const h = "abcdefghjkmnpqrstuvwxyz", r = "23456789"; let s = "";
+  const sayi = new Uint32Array(10); crypto.getRandomValues(sayi);
+  sayi.forEach((n, i) => { s += i % 4 === 3 ? r[n % r.length] : h[n % h.length]; });
+  return s;
+}
+function girisKilitli(ad) {
+  const sinir = Date.now() - 10 * 60 * 1000;
+  hataliGiris[ad] = (hataliGiris[ad] || []).filter(z => z > sinir);
+  return hataliGiris[ad].length >= 8;
+}
+function cagriSayisi(uyeId) {
+  const gun = D.cagrilar[bugun()] || {};
+  if (uyeId == null) return Object.values(gun).reduce((t, n) => t + n, 0);
+  return gun[uyeId] || 0;
+}
+function cagriEkle(uyeId) {
+  const g = D.cagrilar[bugun()] = D.cagrilar[bugun()] || {};
+  g[uyeId] = (g[uyeId] || 0) + 1;
+}
+function cagriEngeli(uyeId) {
+  if (cagriSayisi(uyeId) >= SINIR_UYE) return "Bugünkü dönüt hakkınız doldu. Lütfen yarın tekrar deneyin.";
+  if (cagriSayisi() >= SINIR_TOPLAM) return "Sistemin bugünkü dönüt sınırı doldu. Lütfen yarın tekrar deneyin ya da proje ekibine haber verin.";
+  return null;
+}
+function diskDurumu() {
+  const yuzde = D.disk, toplam = DISK_TOPLAM_GB * 1024 ** 3;
+  return { yuzde, toplam, kullanilan: toplam * yuzde / 100, bos: toplam * (100 - yuzde) / 100,
+    seviye: yuzde >= DISK_KRITIK ? "kritik" : yuzde >= DISK_UYARI ? "uyari" : "iyi", yuklemeKapali: yuzde >= DISK_DUR };
+}
+
+function sistemDenetimleri() {
+  const s = [], d = diskDurumu();
+  let metin = `Depolama alanının %${Math.round(d.yuzde)} kadarı dolu, ${boyut(d.bos)} boş.`;
+  if (d.yuklemeKapali) metin += " Boş alan çok azaldığı için yeni yüklemeler durduruldu.";
+  else if (d.seviye === "kritik") metin += " Alan açmazsanız yeni yüklemeler yakında duracak.";
+  else if (d.seviye === "uyari") metin += " Yedekleri indirip eski yedekleri silmeyi ya da diski büyütmeyi planlayın.";
+  s.push({ ad: "Depolama", seviye: d.yuklemeKapali ? "kritik" : d.seviye, metin, serit: true });
+
+  const y = D.yedekler[0];
+  if (!y) s.push({ ad: "Yedekleme", seviye: "uyari", metin: "Henüz yedek alınmadı.", serit: true });
+  else {
+    const eski = Date.now() - new Date(y.zaman.replace(" ", "T")).getTime() > 2 * 86400000;
+    s.push({ ad: "Yedekleme", seviye: eski ? "uyari" : "iyi", serit: true,
+      metin: `Son yedek ${y.zaman} tarihinde alındı.` + (eski ? " İki günden eski, otomatik yedekleme çalışmıyor olabilir." : " Gerçek sitede her gece 03:30'da otomatik alınır.") });
+  }
+  s.push({ ad: "Dil modeli", seviye: "uyari", serit: false,
+    metin: "Demo modu: dönütler gerçek değil, örnek metin gösteriliyor." });
+  s.push({ ad: "API anahtarı", seviye: "bilgi", serit: false,
+    metin: "Demoda anahtar yok. Gerçek sitede anahtar sunucuda şifreli saklanır, siteye yalnızca çalışırken verilir; bu ekranda yalnızca \"tanımlı, şifreli depoda\" yazar, anahtarın kendisi hiçbir yerde görünmez." });
+  const hata = D.planlar.reduce((t, p) => t + p.gonderimler.filter(g => g.durum === "hata").length, 0);
+  s.push({ ad: "Dönüt üretimi", seviye: hata ? "uyari" : "iyi", serit: false,
+    metin: hata ? `${hata} gönderimde dönüt üretilemedi, plan sayfasından yeniden deneyebilirsiniz.` : "Hatalı gönderim yok." });
+  const toplam = cagriSayisi();
+  s.push({ ad: "Günlük model kullanımı", seviye: toplam >= SINIR_TOPLAM * 0.8 ? "uyari" : "iyi", serit: toplam >= SINIR_TOPLAM,
+    metin: `Bugün ${toplam} çağrı yapıldı, günlük sınır ${SINIR_TOPLAM}. Öğretmen başına günlük sınır ${SINIR_UYE}.` });
+  s.push({ ad: "HTTPS", seviye: "iyi", serit: false, metin: "Gerçek sitede zorunlu; ücretsiz Let's Encrypt sertifikası kendiliğinden yenilenir." });
+  return s;
+}
+function seritUyarilari() { return sistemDenetimleri().filter(d => d.serit && (d.seviye === "uyari" || d.seviye === "kritik")); }
+
+/* ------------------------------------------------------------ sayfalar */
+function ust() {
+  const u = ben();
+  let nav = "";
+  if (u) {
+    const a = (ad, metin) => `<a data-git="${ad}" class="${sayfa.ad === ad ? "etkin" : ""}">${metin}</a>`;
+    const nokta = seritUyarilari().length ? ' <span class="nokta"></span>' : "";
+    nav = "<nav>" + (u.degismeli ? "" : u.admin
+      ? a("adminPlanlar", "Planlar") + a("uyeler", "Üyeler") + a("ayarlar", "Ayarlar") + a("sistem", "Sistem" + nokta) + a("kayitlar", "Kayıtlar")
+      : a("planlar", "Planlarım")) +
+      a("sifre", "Şifre") + '<a class="cikis" data-is="cikis">Çıkış (' + k(u.ad) + ")</a></nav>";
+  }
+  return '<header class="ust"><div class="marka"><span class="yaprak"></span>İklimPAB <em>Ders Planı Dönüt</em></div>' + nav + "</header>";
+}
+
+function sayfaGiris() {
+  return `<section class="kart dar">
+    <h1>Giriş</h1>
+    <form data-form="giris">
+      <label>Kullanıcı adı <input name="kullanici" autocomplete="username" required></label>
+      <label>Şifre <input name="sifre" type="password" autocomplete="current-password" required></label>
+      <button class="dugme">Giriş yap</button>
+    </form>
+  </section>
+  <section class="kart dar" style="margin-top:0">
+    <h2>Deneme hesapları</h2>
+    <table class="hesaplar">
+      <tr><th>Rol</th><th>Kullanıcı adı</th><th>Şifre</th></tr>
+      <tr><td>Admin</td><td><code>admin</code></td><td><code>admin1234</code></td></tr>
+      <tr><td>Öğretmen</td><td><code>ogretmen</code></td><td><code>ogretmen1234</code></td></tr>
+    </table>
+    <p class="soluk kucuk">Önerilen sıra: öğretmen olarak bir plan yükleyin, sonra admin olarak girip planı, Sistem ve Kayıtlar sayfalarını inceleyin. Admin'in eklediği yeni üyeler ilk girişte şifrelerini değiştirmek zorundadır.</p>
+    <p class="kucuk"><a data-is="sifirla">Demo verilerini sıfırla</a></p>
+  </section>`;
+}
+
+function yuklemeFormu(planId) {
+  return `<form data-form="yukle" data-plan="${planId || ""}" class="yatay">
+    ${planId ? "" : '<label class="genis">Plan başlığı <input name="baslik" maxlength="200" placeholder="Örnek: 7. sınıf, sera etkisi" required></label>'}
+    <label>Dosya (.docx, .pdf, .txt) <input name="dosya" type="file" accept=".docx,.pdf,.txt" required></label>
+    <button class="dugme">Yükle ve dönüt al</button>
+  </form>`;
+}
+
+function planTablosu(planlar, admin) {
+  if (!planlar.length) return '<p class="soluk">Henüz yüklenmiş plan yok.</p>';
+  const satirlar = planlar.slice().reverse().map(p => {
+    const s = sonGonderim(p), u = uyeBul(p.uye);
+    return "<tr>" + (admin ? "<td>" + k(u.ad) + (u.aktif ? "" : ' <span class="soluk">(silinmiş üye)</span>') + "</td>" : "") +
+      `<td><a data-git="plan" data-id="${p.id}">${k(p.baslik)}</a></td><td>${p.gonderimler.length}</td><td>${k(s ? s.zaman : "")}</td><td>${rozet(s && s.durum)}</td></tr>`;
+  }).join("");
+  return "<table><thead><tr>" + (admin ? "<th>Öğretmen</th>" : "") +
+    "<th>Plan</th><th>Yükleme sayısı</th><th>Son yükleme</th><th>Durum</th></tr></thead><tbody>" + satirlar + "</tbody></table>";
+}
+
+function sayfaPlanlar() {
+  const benim = D.planlar.filter(p => p.uye === oturumId);
+  const kalan = Math.max(0, SINIR_UYE - cagriSayisi(oturumId));
+  return `<h1>Planlarım</h1>
+    <section class="kart"><h2>Yeni plan yükle</h2>${yuklemeFormu(null)}
+    <p class="soluk kucuk">Bugün kalan dönüt hakkınız: ${kalan} / ${SINIR_UYE}</p></section>` + planTablosu(benim, false);
+}
+
+function sayfaPlan() {
+  const p = planBul(sayfa.id), u = ben();
+  if (!p || (p.uye !== u.id && !u.admin)) return '<section class="kart dar"><p>Plan bulunamadı.</p></section>';
+  const sahibi = p.uye === u.id;
+  const kalan = Math.max(0, D.ayar.azami - p.gonderimler.filter(g => g.durum !== "hata").length);
+  let html = `<p class="soluk"><a data-git="${u.admin ? "adminPlanlar" : "planlar"}">← Planlar</a></p><h1>${k(p.baslik)}</h1>`;
+  if (u.admin) html += `<p class="soluk">Öğretmen: ${k(uyeBul(p.uye).ad)}</p>`;
+  if (sahibi) {
+    html += '<section class="kart"><h2>Gözden geçirilmiş sürümü yükle</h2>' + (kalan > 0
+      ? `<p class="soluk">Bu plan için kalan yükleme hakkı: ${kalan} / ${D.ayar.azami}</p>` + yuklemeFormu(p.id)
+      : `<p>Bu plan için yükleme hakkınız doldu (${D.ayar.azami}).</p>`) + "</section>";
+  }
+  for (const s of p.gonderimler.slice().reverse()) {
+    html += `<section class="kart"><div class="surum-ust"><h2>Sürüm ${s.surum}</h2>${rozet(s.durum)}<span class="soluk">${k(s.zaman)}</span>` +
+      (s.veri ? `<a data-is="dosya" data-plan="${p.id}" data-id="${s.id}">${k(s.dosya)} dosyasını indir</a>` : `<span class="soluk">${k(s.dosya)}</span>`) + "</div>";
+    if (s.durum === "bekliyor") html += '<p class="bekleme"><span class="donen"></span>Dönüt hazırlanıyor.</p>';
+    else {
+      html += '<div class="donut">' + donutHtml(s.donut) + "</div>";
+      if (u.admin) html += `<p class="soluk kucuk">Model: ${k(s.model || "demo")}</p>
+        <button class="dugme ikincil" data-is="yenidenUret" data-plan="${p.id}" data-id="${s.id}">Dönütü yeniden üret</button>`;
+    }
+    html += "</section>";
+  }
+  return html;
+}
+
+function sayfaAdminPlanlar() {
+  const donut = D.planlar.reduce((t, p) => t + p.gonderimler.filter(s => s.durum === "hazir").length, 0);
+  const hata = D.planlar.reduce((t, p) => t + p.gonderimler.filter(s => s.durum === "hata").length, 0);
+  return `<div class="baslik-satiri"><h1>Tüm planlar</h1>
+      <a class="dugme" data-is="zip">Tüm planları ve dönütleri indir (.zip)</a></div>
+    <div class="bildirim uyari">Site demo modunda: dönütler gerçek değil. Gerçek sitede API anahtarı sunucuda girildiğinde bu uyarı kalkar.</div>
+    <div class="ozet">
+      <div><b>${D.uyeler.filter(u => u.aktif && !u.admin).length}</b>öğretmen</div>
+      <div><b>${D.planlar.length}</b>plan</div>
+      <div><b>${donut}</b>dönüt</div>
+      <div><b>${hata}</b>hatalı işlem</div>
+    </div>` + planTablosu(D.planlar, true);
+}
+
+function sayfaUyeler() {
+  const satirlar = D.uyeler.filter(u => u.aktif).sort((a, b) => b.admin - a.admin).map(u => `<tr>
+      <td>${k(u.ad)}</td><td>${k(u.kullanici)}</td><td>${u.admin ? "Admin" : "Öğretmen"}</td>
+      <td>${k(u.sonGiris || "Hiç girmedi")}${u.degismeli ? '<br><span class="soluk kucuk">geçici şifrede</span>' : ""}</td>
+      <td>${D.planlar.filter(p => p.uye === u.id).length}</td>
+      <td><form data-form="uyeSifre" data-id="${u.id}" class="satirici">
+        <input name="sifre" placeholder="Yeni şifre" minlength="8" required size="14">
+        <button class="dugme ikincil">Değiştir</button></form></td>
+      <td>${u.id !== oturumId ? `<button class="dugme tehlike" data-is="uyeSil" data-id="${u.id}">Sil</button>` : ""}</td>
+    </tr>`).join("");
+  return `<h1>Üyeler</h1>
+    <section class="kart"><h2>Yeni üye ekle</h2>
+      <form data-form="uyeEkle" class="yatay">
+        <label>Ad soyad <input name="ad" maxlength="100" required></label>
+        <label>Kullanıcı adı <input name="kullanici" pattern="[a-z0-9._]{3,30}" title="Küçük harf, rakam, nokta, alt çizgi" required></label>
+        <label>Şifre <input name="sifre" value="${rastgeleSifre()}" minlength="8" required></label>
+        <label class="onay"><input type="checkbox" name="admin"> Admin yetkisi</label>
+        <button class="dugme">Ekle</button>
+      </form>
+      <p class="soluk kucuk">Şifre alanına rastgele bir öneri yazıldı; değiştirebilirsiniz. Şifre yalnızca ekleme anında görünür, not alıp öğretmene iletin. Öğretmen ilk girişte bu geçici şifreyi değiştirmek zorundadır.</p>
+    </section>
+    <table><thead><tr><th>Ad soyad</th><th>Kullanıcı adı</th><th>Rol</th><th>Son giriş</th><th>Plan</th><th>Şifre değiştir</th><th></th></tr></thead>
+    <tbody>${satirlar}</tbody></table>`;
+}
+
+function sayfaAyarlar() {
+  return `<h1>Ayarlar</h1>
+    <section class="kart"><form data-form="ayarlar">
+      <label>Dönüt yönergesi
+        <span class="soluk kucuk">Gerçek sitede yapay zekâ her planı bu yönergeye göre değerlendirir. Değişiklik yalnızca sonraki yüklemeleri etkiler. Demoda yönerge kaydedilir ama dönüt metni değişmez.</span>
+        <textarea name="yonerge" rows="20" required>${k(D.ayar.yonerge)}</textarea></label>
+      <label class="kisa">Plan başına yükleme hakkı <input name="azami" type="number" min="1" max="100" value="${D.ayar.azami}" required></label>
+      <button class="dugme">Kaydet</button>
+    </form></section>
+    <section class="kart"><h2>Dil modeli</h2>
+      <p>Sağlayıcı: <b>demo</b></p>
+      <p class="soluk kucuk">Güvenlik nedeniyle anahtar bu panelden görülemez ve değiştirilemez. Gerçek sitede sunucuda <code>sudo bash /opt/iklimpab/kurulum/anahtar_ayarla.sh</code> komutuyla girilir. Girildikten sonra burada "Anahtar: tanımlı, şifreli depoda" yazar.</p>
+    </section>`;
+}
+
+function sayfaSistem() {
+  const d = diskDurumu(), denetimler = sistemDenetimleri();
+  const satirlar = denetimler.map(x => `<tr><td>${k(x.ad)}</td><td>${seviyeRozet(x.seviye)}</td><td>${k(x.metin)}</td></tr>`).join("");
+  const yuklemeBoyutu = D.planlar.reduce((t, p) => t + p.gonderimler.reduce((a, g) => a + (g.veri ? g.veri.length * 0.75 : 40000), 0), 0);
+  const yedekler = D.yedekler.slice(0, 5).map(y => `<tr><td>${k(y.ad)}</td><td>${k(y.zaman)}</td><td>${boyut(y.boyut)}</td>
+      <td><a data-is="yedekIndir" data-ad="${k(y.ad)}">İndir</a></td></tr>`).join("");
+  return `<h1>Sistem durumu</h1>
+    <table><thead><tr><th>Denetim</th><th>Durum</th><th>Açıklama</th></tr></thead><tbody>${satirlar}</tbody></table>
+
+    <section class="kart ust-bosluk"><h2>Depolama</h2>
+      <progress class="cubuk ${d.seviye}" value="${Math.round(d.yuzde)}" max="100"></progress>
+      <p>Disk: ${boyut(d.kullanilan)} dolu, ${boyut(d.bos)} boş, toplam ${boyut(d.toplam)} (%${Math.round(d.yuzde)})</p>
+      <p class="soluk">Yüklenen planlar: ${D.planlar.reduce((t, p) => t + p.gonderimler.length, 0)} dosya, ${boyut(yuklemeBoyutu)}</p>
+      <p class="soluk kucuk">Uyarı eşikleri: %${DISK_UYARI} uyarı, %${DISK_KRITIK} kritik. Disk %${DISK_DUR} dolduğunda yeni yüklemeler durur, böylece site çökmez ve var olan veriler korunur.</p>
+    </section>
+
+    <section class="kart demo-kutu"><h2>Demo: depolama uyarısını deneyin</h2>
+      <p class="kucuk">Gerçek sitede bu değer sunucunun diskinden okunur. Burada kaydırıcıyla doluluğu değiştirip uyarıların nasıl göründüğünü deneyebilirsiniz.</p>
+      <label>Disk doluluğu: <b id="diskDeger">%${Math.round(d.yuzde)}</b>
+        <input type="range" min="0" max="100" value="${Math.round(d.yuzde)}" data-disk></label>
+      <p class="soluk kucuk">%${DISK_UYARI} ve üstünde tüm admin sayfalarının üstünde uyarı çıkar, menüde "Sistem" yanında kırmızı nokta belirir. %${DISK_DUR} ve üstünde öğretmen yükleme yapmaya çalışırsa uyarı alır.</p>
+    </section>
+
+    <section class="kart"><div class="baslik-satiri"><h2>Yedekler</h2>
+      <button class="dugme ikincil" data-is="yedekAl">Şimdi yedek al</button></div>
+      ${yedekler ? `<table><thead><tr><th>Yedek</th><th>Tarih</th><th>Boyut</th><th></th></tr></thead><tbody>${yedekler}</tbody></table>` : '<p class="soluk">Henüz yedek yok.</p>'}
+      <p class="soluk kucuk">Sunucuda son ${YEDEK_SAKLA} yedek saklanır. Yedekler sunucuyla aynı diskte durur; düzenli olarak indirip başka bir yerde saklayın. Yedek tüm planları ve şifre özetlerini içerir, API anahtarını içermez. Demoda "İndir" bu tarayıcıdaki demo verilerini zip olarak verir.</p>
+    </section>
+
+    <section class="kart"><h2>Kullanım ve sürüm</h2>
+      <p>Bugünkü model çağrısı: ${cagriSayisi()} / ${SINIR_TOPLAM} · Öğretmen başına günlük sınır: ${SINIR_UYE}</p>
+      <p class="soluk kucuk">Uygulama sürümü 2.1 (demo). Sınırlar ve depolama eşikleri gerçek sitede sunucudaki ayar dosyasından değiştirilir.</p>
+    </section>`;
+}
+
+function sayfaKayitlar() {
+  const riskli = ["giris_hatali", "giris_kilitli", "yukleme_reddedildi"];
+  const satirlar = D.kayitlar.map(x => `<tr class="${riskli.includes(x.olay) ? "satir-uyari" : ""}">
+      <td>${k(x.zaman)}</td><td>${k(x.kullanici)}</td><td>${x.kullanici === "sistem" ? "sunucu" : "bu tarayıcı"}</td><td>${k(x.olay)}</td><td>${k(x.ayrinti)}</td></tr>`).join("");
+  return `<h1>İşlem kayıtları</h1>
+    <p class="soluk">Son 300 işlem: girişler, hatalı denemeler, üye ve ayar değişiklikleri, indirmeler. Riskli olaylar sarı satırla gösterilir. Gerçek sitede IP sütununda bağlanılan adres yazar.</p>
+    <table><thead><tr><th>Zaman</th><th>Kullanıcı</th><th>IP</th><th>Olay</th><th>Ayrıntı</th></tr></thead><tbody>${satirlar}</tbody></table>`;
+}
+
+function sayfaSifre() {
+  const zorunlu = ben().degismeli;
+  return `<section class="kart dar"><h1>Şifre değiştir</h1>
+    ${zorunlu ? '<p class="soluk">Size verilen geçici şifreyi değiştirmeden siteyi kullanamazsınız.</p>' : ""}
+    <form data-form="sifre">
+      <label>Mevcut şifre <input name="eski" type="password" required></label>
+      <label>Yeni şifre (en az 8 karakter, harf ve rakam içermeli) <input name="yeni" type="password" minlength="8" required></label>
+      <label>Yeni şifre, tekrar <input name="yeni2" type="password" minlength="8" required></label>
+      <button class="dugme">Kaydet</button>
+    </form></section>`;
+}
+
+const SAYFALAR = { giris: sayfaGiris, planlar: sayfaPlanlar, plan: sayfaPlan, adminPlanlar: sayfaAdminPlanlar,
+  uyeler: sayfaUyeler, ayarlar: sayfaAyarlar, sistem: sayfaSistem, kayitlar: sayfaKayitlar, sifre: sayfaSifre };
+const ADMIN_SAYFALARI = ["adminPlanlar", "uyeler", "ayarlar", "sistem", "kayitlar"];
+
+function ciz() {
+  const u = ben();
+  if (!u) sayfa = { ad: "giris" };
+  else if (u.degismeli && sayfa.ad !== "sifre") {
+    sayfa = { ad: "sifre" };
+    if (!mesaj) bildir("Güvenliğiniz için önce size verilen geçici şifreyi değiştirin.", "uyari");
+  }
+  else if (sayfa.ad === "giris") sayfa = { ad: u.admin ? "adminPlanlar" : "planlar" };
+  else if (ADMIN_SAYFALARI.includes(sayfa.ad) && !u.admin) sayfa = { ad: "planlar" };
+  else if (sayfa.ad === "planlar" && u.admin) sayfa = { ad: "adminPlanlar" };
+  let ustUyari = "";
+  if (u && u.admin && !u.degismeli) {
+    ustUyari = seritUyarilari().map(x => `<div class="bildirim ${x.seviye === "kritik" ? "hata" : "uyari"}"><b>${k(x.ad)}:</b> ${k(x.metin)}` +
+      (sayfa.ad === "sistem" ? "" : ' <a data-git="sistem">Sistem sayfası</a>') + "</div>").join("");
+  }
+  const bildirim = mesaj ? `<div class="bildirim ${mesaj.tur}">${k(mesaj.metin)}</div>` : "";
+  mesaj = null;
+  document.getElementById("uygulama").innerHTML = ust() + "<main>" + ustUyari + bildirim + SAYFALAR[sayfa.ad]() + "</main>";
+}
+
+/* ------------------------------------------------------------ işlemler */
+function dosyaOku(dosya, metinMi) {
+  return new Promise((coz, hata) => {
+    const o = new FileReader();
+    o.onload = () => coz(o.result); o.onerror = () => hata(o.error);
+    metinMi ? o.readAsText(dosya) : o.readAsDataURL(dosya);
+  });
+}
+
+function donutBaslat(plan, g, kelime) {
+  g.durum = "bekliyor"; g.donut = "";
+  cagriEkle(oturumId); kaydet();
+  setTimeout(() => { // gerçek sitede burada dil modeli çağrılır
+    g.durum = "hazir"; g.model = "demo"; g.donut = ornekDonut(plan.baslik, g.dosya, kelime); kaydet();
+    if (sayfa.ad === "plan" && sayfa.id === plan.id) ciz();
+  }, 2000);
+}
+
+async function yukle(form) {
+  const dosya = form.dosya.files[0];
+  const uzanti = (dosya.name.match(/\.[^.]+$/) || [""])[0].toLowerCase();
+  if (![".docx", ".pdf", ".txt"].includes(uzanti)) { bildir("Yalnızca .docx, .pdf ve .txt dosyaları yüklenebilir.", "hata"); return ciz(); }
+  if (diskDurumu().yuklemeKapali) {
+    kayit("yukleme_reddedildi", "depolama dolu"); kaydet();
+    bildir("Sistemin depolama alanı doldu, şu anda yükleme yapılamıyor. Lütfen proje ekibine haber verin.", "hata"); return ciz();
+  }
+  const engel = cagriEngeli(oturumId);
+  if (engel) { kayit("yukleme_reddedildi", "günlük sınır"); kaydet(); bildir(engel, "hata"); return ciz(); }
+  let plan = form.dataset.plan ? planBul(Number(form.dataset.plan)) : null;
+  if (plan && plan.gonderimler.filter(g => g.durum !== "hata").length >= D.ayar.azami) {
+    bildir(`Bu plan için yükleme hakkı doldu (en fazla ${D.ayar.azami}).`, "hata"); return ciz();
+  }
+  let kelime = 0, veri = null;
+  if (uzanti === ".txt") {
+    const metin = await dosyaOku(dosya, true);
+    kelime = metin.split(/\s+/).filter(Boolean).length;
+    if (metin.trim().length < 50) { bildir("Dosyadan metin okunamadı. Dosya bozuk ya da taranmış bir görüntü olabilir; lütfen planı Word (.docx) ya da metin içeren PDF olarak yükleyin.", "hata"); return ciz(); }
+  }
+  if (dosya.size <= AZAMI_DOSYA) veri = await dosyaOku(dosya, false);
+  if (!plan) {
+    plan = { id: yeniId(), uye: oturumId, baslik: form.baslik.value.trim().slice(0, 200), gonderimler: [] };
+    D.planlar.push(plan);
+  }
+  const g = { id: yeniId(), surum: plan.gonderimler.length + 1, dosya: dosya.name, veri, zaman: simdi(), durum: "bekliyor", donut: "" };
+  plan.gonderimler.push(g);
+  kayit("yukleme", `plan=${plan.id} sürüm=${g.surum}`);
+  if (!kaydet()) { g.veri = null; kaydet(); }
+  if (!g.veri) bildir("Demo sürümde tarayıcı deposu küçük olduğu için bu dosyanın içeriği saklanmadı, yalnızca adı kaydedildi.", "uyari");
+  donutBaslat(plan, g, kelime);
+  git("plan", { id: plan.id });
+}
+
+const FORMLAR = {
+  giris(f) {
+    const ad = f.kullanici.value.trim().toLowerCase().slice(0, 60);
+    if (girisKilitli(ad)) {
+      kayit("giris_kilitli", "", ad); kaydet();
+      bildir("Çok fazla hatalı deneme. Lütfen 10 dakika sonra tekrar deneyin.", "hata"); return ciz();
+    }
+    const u = D.uyeler.find(x => x.aktif && x.kullanici === ad && x.sifre === f.sifre.value);
+    if (!u) {
+      (hataliGiris[ad] = hataliGiris[ad] || []).push(Date.now());
+      kayit("giris_hatali", "", ad); kaydet();
+      bildir("Kullanıcı adı veya şifre hatalı.", "hata"); return ciz();
+    }
+    delete hataliGiris[ad];
+    oturumId = u.id; u.sonGiris = simdi();
+    kayit("giris", "", u.kullanici); kaydet();
+    try { sessionStorage.setItem(ANAHTAR + "_oturum", u.id); } catch (e) {}
+    git(u.admin ? "adminPlanlar" : "planlar");
+  },
+  yukle,
+  uyeEkle(f) {
+    const kullanici = f.kullanici.value.trim().toLowerCase(), ad = f.ad.value.trim().slice(0, 100), sifre = f.sifre.value;
+    const sorun = sifreSorunu(sifre, kullanici);
+    if (!/^[a-z0-9._]{3,30}$/.test(kullanici)) bildir("Kullanıcı adı 3 ile 30 karakter arasında olmalı; yalnızca küçük harf, rakam, nokta ve alt çizgi içerebilir.", "hata");
+    else if (!ad) bildir("Ad soyad boş bırakılamaz.", "hata");
+    else if (sorun) bildir(sorun, "hata");
+    else if (D.uyeler.some(u => u.kullanici === kullanici)) bildir("Bu kullanıcı adı zaten kullanılıyor.", "hata");
+    else {
+      D.uyeler.push({ id: yeniId(), kullanici, ad, sifre, admin: f.admin.checked, aktif: true, degismeli: true, sonGiris: "" });
+      kayit("uye_eklendi", kullanici + (f.admin.checked ? " (admin)" : "")); kaydet();
+      bildir(`${ad} eklendi. Kullanıcı adı: ${kullanici}  Geçici şifre: ${sifre}`);
+    }
+    ciz();
+  },
+  uyeSifre(f) {
+    const u = uyeBul(Number(f.dataset.id)), sorun = sifreSorunu(f.sifre.value, u.kullanici);
+    if (sorun) { bildir(sorun, "hata"); return ciz(); }
+    u.sifre = f.sifre.value; u.degismeli = u.id !== oturumId;
+    kayit("uye_sifre", u.kullanici); kaydet();
+    bildir(`${u.ad} için geçici şifre: ${u.sifre}`); ciz();
+  },
+  ayarlar(f) {
+    const azami = Number(f.azami.value);
+    if (!f.yonerge.value.trim()) { bildir("Yönerge boş bırakılamaz.", "hata"); return ciz(); }
+    if (!(azami >= 1 && azami <= 100)) { bildir("Yükleme hakkı 1 ile 100 arasında bir sayı olmalı.", "hata"); return ciz(); }
+    D.ayar.yonerge = f.yonerge.value.trim().slice(0, 20000); D.ayar.azami = azami;
+    kayit("ayar_degisti", `yükleme hakkı=${azami}`); kaydet();
+    bildir("Ayarlar kaydedildi. Yeni yönerge bundan sonraki yüklemelerde kullanılacak."); ciz();
+  },
+  sifre(f) {
+    const u = ben(), sorun = sifreSorunu(f.yeni.value, u.kullanici);
+    if (f.eski.value !== u.sifre) bildir("Mevcut şifre hatalı.", "hata");
+    else if (sorun) bildir(sorun, "hata");
+    else if (f.yeni.value !== f.yeni2.value) bildir("Yeni şifreler birbiriyle aynı değil.", "hata");
+    else if (f.yeni.value === u.sifre) bildir("Yeni şifre eskisiyle aynı olamaz.", "hata");
+    else {
+      u.sifre = f.yeni.value; u.degismeli = false;
+      kayit("sifre_degisti"); kaydet();
+      bildir("Şifreniz değiştirildi."); return git(u.admin ? "adminPlanlar" : "planlar");
+    }
+    ciz();
+  }
+};
+
+function indir(ad, blobYadaUrl) {
+  const a = document.createElement("a");
+  const url = typeof blobYadaUrl === "string" ? blobYadaUrl : URL.createObjectURL(blobYadaUrl);
+  a.href = url; a.download = ad; document.body.appendChild(a); a.click(); a.remove();
+  if (typeof blobYadaUrl !== "string") setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+/* Sıkıştırmasız zip yazıcı (harici kütüphane gerekmez) */
+const CRC_TABLO = (() => { const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let i = 0; i < 8; i++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC_TABLO[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zipOlustur(girdiler) { // [{ad, veri: Uint8Array}]
+  const kod = new TextEncoder(), parcalar = [], merkez = []; let konum = 0;
+  const baslik = (b, alanlar) => { const v = new DataView(new ArrayBuffer(b)); let o = 0;
+    for (const [uz, deger] of alanlar) { uz === 4 ? v.setUint32(o, deger, true) : v.setUint16(o, deger, true); o += uz; }
+    return new Uint8Array(v.buffer); };
+  for (const g of girdiler) {
+    const ad = kod.encode(g.ad), crc = crc32(g.veri), n = g.veri.length;
+    const yerel = baslik(30, [[4, 0x04034b50], [2, 20], [2, 0x0800], [2, 0], [2, 0], [2, 0x21], [4, crc], [4, n], [4, n], [2, ad.length], [2, 0]]);
+    merkez.push(baslik(46, [[4, 0x02014b50], [2, 20], [2, 20], [2, 0x0800], [2, 0], [2, 0], [2, 0x21], [4, crc], [4, n], [4, n],
+      [2, ad.length], [2, 0], [2, 0], [2, 0], [2, 0], [4, 0], [4, konum]]), ad);
+    parcalar.push(yerel, ad, g.veri); konum += 30 + ad.length + n;
+  }
+  const merkezBoyut = merkez.reduce((t, p) => t + p.length, 0);
+  const son = baslik(22, [[4, 0x06054b50], [2, 0], [2, 0], [2, girdiler.length], [2, girdiler.length], [4, merkezBoyut], [4, konum], [2, 0]]);
+  return new Blob([...parcalar, ...merkez, son], { type: "application/zip" });
+}
+function urlBayt(url) { const s = atob(url.split(",")[1]), b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
+function guvenliAd(s) { return String(s).replace(/[^\p{L}\p{N}._ -]/gu, "_").trim().slice(0, 60) || "adsiz"; }
+function csvHucre(h) { // tablolama programında formül olarak çalışmasın
+  let s = String(h);
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+
+function planGirdileri() {
+  const kod = new TextEncoder(), girdiler = [];
+  const csv = [["uye", "kullanici_adi", "plan_no", "plan_basligi", "surum", "dosya", "yukleme_zamani", "durum", "model"]];
+  for (const p of D.planlar) {
+    const u = uyeBul(p.uye), klasor = `${guvenliAd(u.kullanici)}/plan${p.id}_${guvenliAd(p.baslik)}`;
+    for (const s of p.gonderimler) {
+      if (s.veri) girdiler.push({ ad: `${klasor}/s${s.surum}_${guvenliAd(s.dosya)}`, veri: urlBayt(s.veri) });
+      if (s.donut) girdiler.push({ ad: `${klasor}/s${s.surum}_donut.md`, veri: kod.encode(s.donut) });
+      csv.push([u.ad, u.kullanici, p.id, p.baslik, s.surum, s.dosya, s.zaman, s.durum, s.model || ""]);
+    }
+  }
+  girdiler.push({ ad: "ozet.csv", veri: kod.encode("﻿" + csv.map(r => r.map(csvHucre).join(",")).join("\r\n")) });
+  return girdiler;
+}
+
+const ISLER = {
+  cikis() { kayit("cikis"); kaydet(); oturumId = null; try { sessionStorage.removeItem(ANAHTAR + "_oturum"); } catch (e) {} git("giris"); },
+  sifirla() {
+    if (!confirm("Bu tarayıcıdaki tüm demo verileri silinsin mi?")) return;
+    D = baslangic(); kaydet(); bildir("Demo verileri sıfırlandı."); ciz();
+  },
+  dosya(el) {
+    const s = planBul(Number(el.dataset.plan)).gonderimler.find(x => x.id === Number(el.dataset.id));
+    if (ben().admin) { kayit("dosya_indirme", `gönderim=${s.id}`); kaydet(); }
+    indir(s.dosya, s.veri);
+  },
+  yenidenUret(el) {
+    if (!confirm("Mevcut dönütün yerine yenisi üretilecek. Emin misiniz?")) return;
+    const p = planBul(Number(el.dataset.plan)), g = p.gonderimler.find(x => x.id === Number(el.dataset.id));
+    kayit("donut_yeniden", `gönderim=${g.id}`);
+    donutBaslat(p, g, 0); ciz();
+  },
+  uyeSil(el) {
+    const u = uyeBul(Number(el.dataset.id));
+    if (!confirm(u.ad + " silinsin mi? Hesap kapanır, yüklediği planlar arşivde kalır.")) return;
+    kayit("uye_silindi", u.kullanici);
+    u.aktif = false; u.kullanici = `${u.kullanici}#silindi${u.id}`; kaydet();
+    bildir(u.ad + " silindi. Yüklediği planlar arşivde saklanıyor."); ciz();
+  },
+  zip() {
+    const girdiler = planGirdileri();
+    kayit("toplu_indirme", `${D.planlar.reduce((t, p) => t + p.gonderimler.length, 0)} gönderim`); kaydet();
+    indir(`iklimpab_planlar_${bugun().replace(/-/g, "")}.zip`, zipOlustur(girdiler));
+  },
+  yedekAl() {
+    const d = new Date();
+    const ad = `yedek_${d.getFullYear()}${iki(d.getMonth() + 1)}${iki(d.getDate())}_${iki(d.getHours())}${iki(d.getMinutes())}${iki(d.getSeconds())}.zip`;
+    const boyutu = new Blob([JSON.stringify(D)]).size;
+    D.yedekler.unshift({ ad, zaman: simdi(), boyut: boyutu });
+    D.yedekler = D.yedekler.slice(0, YEDEK_SAKLA);
+    kayit("yedek_alindi", ad); kaydet();
+    bildir("Yedek alındı: " + ad); ciz();
+  },
+  yedekIndir(el) {
+    const kod = new TextEncoder();
+    const kopya = JSON.parse(JSON.stringify(D));
+    kopya.uyeler.forEach(u => { u.sifre = "(gerçek sitede yalnızca şifre özeti saklanır)"; });
+    const girdiler = planGirdileri();
+    girdiler.push({ ad: "site_verisi.json", veri: kod.encode(JSON.stringify(kopya, null, 2)) });
+    kayit("yedek_indirildi", el.dataset.ad); kaydet();
+    indir(el.dataset.ad, zipOlustur(girdiler));
+  }
+};
+
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-git]"), i = e.target.closest("[data-is]");
+  if (g) { e.preventDefault(); git(g.dataset.git, g.dataset.id ? { id: Number(g.dataset.id) } : null); }
+  else if (i) { e.preventDefault(); ISLER[i.dataset.is](i); }
+});
+document.addEventListener("submit", e => {
+  const f = e.target.closest("[data-form]");
+  if (!f) return;
+  e.preventDefault();
+  Promise.resolve(FORMLAR[f.dataset.form](f)).catch(() => { bildir("İşlem tamamlanamadı.", "hata"); ciz(); });
+});
+document.addEventListener("input", e => {
+  if (e.target.matches("[data-disk]")) document.getElementById("diskDeger").textContent = "%" + e.target.value;
+});
+document.addEventListener("change", e => {
+  if (e.target.matches("[data-disk]")) { D.disk = Number(e.target.value); kaydet(); ciz(); }
+});
+
+// Sayfa yenilenirse yarım kalan dönütleri tamamla
+for (const p of D.planlar) for (const s of p.gonderimler) if (s.durum === "bekliyor") { s.durum = "hazir"; s.model = "demo"; s.donut = ornekDonut(p.baslik, s.dosya, 0); }
+kaydet();
+ciz();
+</script>
+</body>
+</html>
